@@ -1,0 +1,191 @@
+calculo-actuarial-ii-Leon Rosario Mauricio/
+|
+|-- 0_Proposito_y_resultados/
+|   |-- Tres lenguajes en paralelo: modelo matemático,
+|   |   implementación (Python/Git) y datos
+|   `-- 8 resultados: Ω/evento/v.a., Bayes, momentos,
+|       distribuciones, Python, GitHub, reproducibilidad,
+|       leer estadística oficial sin confundir conteo/tasa/q_x
+|
+|-- 1_Problema_actuarial/
+|   |-- Obligación = evento incierto + monto + momento de pago
+|   |-- Valor actuarial = E[valor presente aleatorio]
+|   |-- X = B·I, E[X] = B·q
+|   |   (ej.: B=500 000, q=0.004 -> E[X]=$2 000)
+|   `-- E[X] no es prima comercial (gastos, margen de
+|       riesgo, capital, reaseguro, etc.)
+|
+|-- 2_Entorno_reproducible/
+|   |-- Trazabilidad: fuente -> transformación -> modelo
+|   |   -> resultado -> reporte
+|   |-- Herramientas: GitHub (2FA), Git, Python 3, VS Code
+|   |   + extensiones Python y Jupyter (sin Anaconda)
+|   |-- Git: user.name, user.email, defaultBranch main
+|   |-- Repo: calculo-actuarial-ii-apellido-nombre,
+|   |   clonar con git clone, abrir con code .
+|   |-- Entorno virtual .venv + requirements.txt
+|   |   (pip freeze) + seleccionar intérprete en VS Code
+|   |-- Estructura: data/{raw,processed}, notebooks/,
+|   |   src/, tests/, figures/, reports/,
+|   |   .github/workflows/tests.yml
+|   |-- Regla de oro: el dato crudo nunca se edita
+|   |-- .gitignore: .venv, __pycache__, .env, datos grandes
+|   |-- Nunca subir: contraseñas, tokens, llaves, datos
+|   |   personales, bases con licencia restrictiva
+|   |-- Ciclo Git: status, add, commit, pull, push
+|   |   (commits coherentes: feat:, data:, test:, notes:)
+|   |-- README: problema, datos, versión de Python,
+|   |   instalación, ejecución, resultados, hipótesis
+|   `-- pytest (bernoulli_expected_cost) + GitHub Actions
+|       (python 3.12, pytest -q en cada push)
+|
+|-- 3_Python_minimo/
+|   |-- Variables, funciones (separan modelo de presentación)
+|   |-- NumPy: vectorizar q * benefit
+|   |-- Pandas: DataFrame de cartera, columna expected_cost
+|   |-- Matplotlib: la gráfica como diagnóstico
+|   |-- SciPy: binom.pmf, binom.cdf
+|   `-- Semilla (default_rng(31415)): reproduce, no
+|       "aleatoriza más"
+|
+|-- 4_Lenguaje_de_probabilidad/
+|   |-- Espacio muestral Ω y eventos (A = {N ≥ 3})
+|   |-- σ-álgebra: Ω ∈ F, complemento, uniones numerables
+|   |-- Espacio (Ω, F, P): P(Ω)=1, P ≥ 0, σ-aditividad
+|   |-- P(A^c)=1-P(A), P(A∪B)=P(A)+P(B)-P(A∩B)
+|   |   (ej.: 0.08+0.05-0.015 = 0.115)
+|   |-- Condicional: P(A|B)=P(A∩B)/P(B); tpx = P(T_x > t)
+|   |-- Prob. total: segmentos 60/40 con 0.02 y 0.06
+|   |   -> P(C)=0.036
+|   |-- Bayes: P(B|C)=2/3 (B es 40% de la cartera pero
+|   |   2/3 de las reclamaciones; no implica causalidad)
+|   `-- Independencia: supuesto, no consecuencia;
+|       disjuntos con P>0 NO son independientes;
+|       falla con epidemias, catástrofes, inflación médica
+|
+|-- 5_Variables_aleatorias/
+|   |-- X: Ω -> R medible (regla fija, resultado incierto)
+|   |-- Discretas: masa p_X(x); continuas: densidad f_X,
+|   |   P(X=x)=0 en continuas
+|   |-- CDF: no decreciente, continua por la derecha,
+|   |   f = F'
+|   `-- Indicadores: E[1_A]=P(A); N = ΣI_j,
+|       E[N]=ΣP(I_j=1) sin requerir independencia
+|
+|-- 6_Esperanza_varianza_dependencia/
+|   |-- Esperanza discreta/continua y LOTUS E[g(X)]
+|   |-- Linealidad (no requiere independencia)
+|   |-- Var(X) = E[X²] - E[X]²; Var(aX+b) = a²Var(X)
+|   |-- Cov(X,Y) = E[XY] - E[X]E[Y]
+|   |-- Var(X+Y) = Var X + Var Y + 2Cov
+|   |   (dependencia común infla el riesgo agregado)
+|   `-- Ley iterada: E[X]=E[E[X|Y]]
+|       Var(X)=E[Var(X|Y)]+Var(E[X|Y])
+|       (dentro de grupos + entre grupos)
+|
+|-- 7_Cuantiles_y_transformaciones/
+|   |-- Cuantil q_α = inf{x : F(x) ≥ α} (la media no
+|   |   describe la cola)
+|   |-- Deducible: (X-d)+ ; E[(X-d)+] = ∫_d^∞ P(X>x)dx
+|   `-- Límite: min{X, u}; con deducible y límite, definir
+|       primero la función de pago y luego programar
+|
+|-- 8_Distribuciones_discretas/
+|   |-- Bernoulli: E=p, Var=p(1-p)
+|   |-- Binomial: E=np, Var=np(1-p)
+|   |   (ej.: n=50, q=0.04 -> E=2, Var=1.92, P(N=2)≈0.2762)
+|   |   Con p_j distintos: Poisson-binomial
+|   |-- Poisson: E=Var=λ, límite de binomial (n grande,
+|   |   p pequeño); si Var >> media: sobredispersión
+|   |   -> binomial negativa o mezcla
+|   `-- Geométrica: E=1/p, Var=(1-p)/p², sin memoria
+|
+|-- 9_Distribuciones_continuas/
+|   |-- Uniforme: E=(a+b)/2, Var=(b-a)²/12;
+|   |   transformación inversa X=F⁻¹(U)
+|   |-- Exponencial: S(t)=e^(-λt), E=1/λ, Var=1/λ²,
+|   |   sin memoria, μ(t)=λ (muy restrictiva para mortalidad)
+|   |-- Gamma: E=αθ, Var=αθ²; α=1 da la exponencial
+|   `-- Normal: simétrica, admite negativos, mala para
+|       severidades de cola pesada; útil en sumas (TCL)
+|
+|-- 10_Riesgo_agregado/
+|   |-- S = X1+...+Xn: E[S]=ΣE[Xj];
+|   |   con independencia Var(S)=ΣVar(Xj)
+|   |-- iid: E[S]=nμ, Var=nσ², CV = (1/√n)(σ/μ)
+|   |   (diversificación bajo independencia)
+|   `-- Modelo colectivo S = Σ_{j=1}^N Xj
+|       E[S]=μE[N]; Var(S)=E[N]σ² + Var(N)μ²
+|       Poisson(λ): E[S]=λμ, Var(S)=λ(σ²+μ²)
+|
+|-- 11_Grandes_numeros_y_simulacion/
+|   |-- LGN: promedio -> μ; frecuencia empírica fluctúa,
+|   |   converge sin ser monótona (Bernoulli p=0.08)
+|   `-- Una cartera grande no elimina riesgo sistemático
+|
+|-- 12_Datos_de_Mexico_INEGI/
+|   |-- EDR 2024: 819 672 casos, 74 variables (DEFUN24),
+|   |   4 930 fuentes informantes, tasa 630 por 100 mil
+|   |-- Serie 2015-2024: 655 688 (2015) -> 747 784 (2019)
+|   |   -> 1 086 743 (2020) -> pico 1 122 249 (2021,
+|   |   tasa 879) -> 847 716 (2022) -> 799 869 (2023)
+|   |   -> 819 672 (2024)
+|   |-- Conteo ≠ tasa bruta (630/100 000 = 0.0063)
+|   |   ≠ probabilidad q_x (condicionada a edad)
+|   |-- Ej.: 10 000 exposiciones -> 63, solo benchmark
+|   |   agregado, no tarifa
+|   |-- Ocurrencia vs. residencia: CDMX 863 por 100 mil
+|   |   (más alta) vs. Quintana Roo 490; sesgo de selección
+|   `-- Leer el diccionario antes del CSV (EDAD mezcla
+|       minutos, horas, días, meses y años); flujo:
+|       raw -> script -> processed -> comparar totales
+|       con cifras oficiales
+|
+|-- 13_Ejemplos_resueltos/
+|   |-- 1: al menos 1 reclamación en 5 años, p=0.03:
+|   |   1-0.97^5 ≈ 0.1413
+|   |-- 2: Binomial(100, 0.02), P(N=3)
+|   |-- 3: Poisson(4.5), P(N>7) = 1 - cdf(7)
+|   |-- 4: Exp(0.25), P(T>3)=e^(-0.75) ≈ 0.4724, E[T]=4
+|   |-- 5: deducible exponencial: E[(X-d)+]=e^(-λd)/λ
+|   |   ≈ $6 065.31 (λ=1/10 000, d=5 000)
+|   `-- 6: Compound Poisson(120), media 8 000, SD 12 000:
+|       E[S]=960 000, Var=24 960 000 000, SD≈157 987
+|
+|-- 14_Errores_a_evitar/
+|   `-- 1 densidad ≠ probabilidad  2 tasa ≠ q_x
+|       3 independencia por comodidad  4 Poisson por ser conteo
+|       5 esperanza ≠ predicción  6 redondear pronto
+|       7 editar datos crudos  8 subir datos sensibles
+|       9 guardar solo el notebook  10 "Python dio este número"
+|
+|-- 15_Practica_guiada/
+|   |-- A: repositorio (2FA, .venv, requirements, estructura,
+|   |   4+ commits, pytest -q, Actions en verde)
+|   |-- B: notebook 01_probabilidad_actuarial.ipynb (Bernoulli,
+|   |   binomial, Poisson, exponencial, LGN, datos,
+|   |   "Conclusiones actuariales"; gráficas con título,
+|   |   ejes e interpretación)
+|   |-- C: DataFrame EDR 2015-2024, 2 gráficas, cambio
+|   |   porcentual 2023-24, máximo de la serie, por qué
+|   |   630 no es q_x, citar fuente
+|   `-- D: entrega reproducible (clonar, entorno limpio,
+|       pip install -r, ejecutar todo en orden)
+|
+|-- 16_Ejercicios/
+|   `-- 31 ejercicios: A fundamentos (1-7), B momentos (8-12),
+|       C distribuciones (13-18), D agregados (19-22),
+|       E México (23-27), F GitHub (28-31)
+|
+|-- 17_Lista_de_verificacion/
+|   `-- Ω/evento/v.a., condicional, Bayes, independencia,
+|       momentos, distribuciones, semilla, Git, .venv,
+|       fuente oficial, tasa bruta ≠ q_x, explicar antes
+|       de mostrar código
+|
+`-- Anexos/
+    |-- Notación esencial: Ω, F, P, X, F_X, f_X, p_X, E, Var,
+    |   Cov, 1_A, N, S, q_α, (x)+
+    `-- Referencias: INEGI (EDR 2024, DEFUN24), GitHub Docs,
+        VS Code, Python venv, Pro Git, Dickson-Hardy-Waters,
+        Klugman-Panjer-Willmot
